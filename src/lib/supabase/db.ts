@@ -3,7 +3,6 @@ import postgres from "postgres";
 import * as dotenv from "dotenv";
 import * as schema from "../../../migrations/schema";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
-import { K2D } from "next/font/google";
 
 dotenv.config({ path: ".env" });
 
