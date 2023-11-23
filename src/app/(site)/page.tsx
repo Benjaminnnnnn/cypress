@@ -2,9 +2,15 @@ import TitleSection from "@/components/landing-page/TitleSection";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-import { CLIENTS } from "@/lib/constants";
+import CustomCard from "@/components/landing-page/CustomCard";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { CLIENTS, PRICING_CARDS, PRICING_PLANS, USERS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { randomUUID } from "crypto";
 import AppBanner from "../../../public/appBanner.png";
 import Calendar from "../../../public/calendar.png";
+import Diamond from "../../../public/icons/diamond.svg";
 
 type Props = {};
 
@@ -30,7 +36,7 @@ const HomePage = (props: Props) => {
         </div>
       </section>
 
-      <section className="relative mx-auto max-w-screen-2xl">
+      <section className="relative mx-auto max-w-full lg:max-w-[70%]">
         <div
           className="
           flex
@@ -105,12 +111,91 @@ const HomePage = (props: Props) => {
 
       <section className="relative">
         <div className="absolute top-56 -z-10 h-32 w-full rounded-full bg-brand-primaryPurple/50 blur-[120px]"></div>
-        <div className="mt-20 flex flex-col overflow-visible overflow-x-hidden px-4 sm:px-6"></div>
+        <div className="mt-20 flex flex-col overflow-visible overflow-x-hidden px-4 sm:px-6">
+          <TitleSection
+            title="Truested by all"
+            subheading="Join thousands of satisfied users who rely on our platform for their personal and professional productivity needs."
+            pill="Testimonials"
+          ></TitleSection>
+          {[...Array(2)].map((arr, idx) => (
+            <div
+              className={cn(
+                "mt-10 flex flex-nowrap gap-6 self-start",
+                {
+                  "flex-row-reverse": idx === 1,
+                  "animate-[slide_250s_linear_infinite]": true,
+                  "animate-[slide_250s_linear_infinite_reverse]": idx === 1,
+                  "ml-[100vw]": idx === 1,
+                },
+                "hover:paused",
+              )}
+              key={randomUUID()}
+              aria-hidden={idx > 0}
+            >
+              {USERS.map((user, idx) => (
+                <CustomCard
+                  key={user.name}
+                  className="w-[500px] shrink-0 rounded-xl dark:bg-gradient-to-t dark:from-border dark:to-background "
+                  cardHeader={
+                    <div className="flex items-center gap-4">
+                      <Avatar>
+                        <AvatarImage
+                          src={`/avatars/${idx + 1}.png`}
+                        ></AvatarImage>
+                        <AvatarFallback>Avatar</AvatarFallback>
+                      </Avatar>
+
+                      <div>
+                        <CardTitle className="text-foreground">
+                          {user.name}
+                        </CardTitle>
+                        <CardDescription className="dark:text-washed-purple-800">
+                          {user.name.toLowerCase()}
+                        </CardDescription>
+                      </div>
+                    </div>
+                  }
+                  cardContent={
+                    <p className="dark:text-washed-purple-800">
+                      {user.message}
+                    </p>
+                  }
+                ></CustomCard>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-20 px-4 sm:px-6">
         <TitleSection
-          title="Truested by all"
-          subheading="Join thousands of satisfied users who rely on our platform for their personal and professional productivity needs."
-          pill="Testimonials"
+          title="The Perfect Plan For You"
+          subheading="Experience all the benefits of our platform. Select a plan that suits your needs and take your productivity to new heights."
+          pill="Pricing"
         ></TitleSection>
+        <div className="mt-10 flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:items-stretch">
+          {PRICING_CARDS.map((card) => (
+            <CustomCard
+              className={cn(
+                "relative w-[300px] rounded-2xl backdrop-blur-3xl dark:bg-black/95",
+                {
+                  "border-brand-primaryPurple/70":
+                    card.planType === PRICING_PLANS.proplan,
+                },
+              )}
+              cardHeader={
+                <CardTitle className="text-3xl font-semibold">
+                  {card.planType === PRICING_PLANS.proplan && (
+                    <>
+                      <div className="absolute top-0 -z-10 hidden h-32 w-full rounded-full bg-brand-primaryPurple/80 blur-[120px] dark:block"></div>
+                      <Image src={Diamond} alt="Pro Plan Icon"></Image>
+                    </>
+                  )}
+                </CardTitle>
+              }
+            ></CustomCard>
+          ))}
+        </div>
       </section>
     </>
   );
