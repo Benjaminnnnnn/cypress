@@ -4,12 +4,13 @@ import Image from "next/image";
 
 import CustomCard from "@/components/landing-page/CustomCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CardDescription, CardTitle } from "@/components/ui/card";
+import { CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { CLIENTS, PRICING_CARDS, PRICING_PLANS, USERS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { randomUUID } from "crypto";
 import AppBanner from "../../../public/appBanner.png";
 import Calendar from "../../../public/calendar.png";
+import CheckIcon from "../../../public/icons/check.svg";
 import Diamond from "../../../public/icons/diamond.svg";
 
 type Props = {};
@@ -167,7 +168,7 @@ const HomePage = (props: Props) => {
         </div>
       </section>
 
-      <section className="mt-20 px-4 sm:px-6">
+      <section className="mt-20 px-4 pb-6 sm:px-6 sm:pb-10">
         <TitleSection
           title="The Perfect Plan For You"
           subheading="Experience all the benefits of our platform. Select a plan that suits your needs and take your productivity to new heights."
@@ -177,21 +178,60 @@ const HomePage = (props: Props) => {
           {PRICING_CARDS.map((card) => (
             <CustomCard
               className={cn(
-                "relative w-[300px] rounded-2xl backdrop-blur-3xl dark:bg-black/95",
+                "relative w-[300px] rounded-2xl backdrop-blur-3xl dark:bg-black/40",
                 {
                   "border-brand-primaryPurple/70":
                     card.planType === PRICING_PLANS.proplan,
                 },
               )}
               cardHeader={
-                <CardTitle className="text-3xl font-semibold">
+                <CardTitle className="text-2xl font-semibold">
                   {card.planType === PRICING_PLANS.proplan && (
                     <>
                       <div className="absolute top-0 -z-10 hidden h-32 w-full rounded-full bg-brand-primaryPurple/80 blur-[120px] dark:block"></div>
-                      <Image src={Diamond} alt="Pro Plan Icon"></Image>
+                      <Image
+                        src={Diamond}
+                        alt="Pro Plan Icon"
+                        className="absolute right-6 top-6"
+                      ></Image>
                     </>
                   )}
+                  {card.planType}
                 </CardTitle>
+              }
+              cardContent={
+                <CardContent className="p-0">
+                  <span className="text-2xl font-normal">${card.price}</span>
+                  {+card.price > 0 ? (
+                    <span className="ml-1 dark:text-washed-purple-800">
+                      /mo
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                  <p className="dark:text-washed-purple-800">
+                    {card.description}
+                  </p>
+                  <Button
+                    variant="btn-primary"
+                    className="mt-4 w-full whitespace-nowrap"
+                  >
+                    {card.planType === PRICING_PLANS.proplan
+                      ? "Go Pro"
+                      : "Get Started"}
+                  </Button>
+                </CardContent>
+              }
+              cardFooter={
+                <ul className="mb-2 flex flex-col gap-4 font-normal">
+                  <small>{card.highlightFeature}</small>
+                  {card.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-2">
+                      <Image src={CheckIcon} alt="Check icon"></Image>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               }
             ></CustomCard>
           ))}
