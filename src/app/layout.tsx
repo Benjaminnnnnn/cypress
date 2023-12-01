@@ -1,9 +1,11 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
+
+import { twMerge } from "tailwind-merge";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const dmSans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +20,7 @@ export default function RootLayout({
   // console.log(db);
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={twMerge("bg-background", dmSans.className)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

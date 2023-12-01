@@ -1,11 +1,20 @@
 "use client";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { FormSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Logo from "../../../../public/cypresslogo.svg";
 
@@ -24,7 +33,9 @@ const LoginPage = (props: Props) => {
     },
   });
 
-  console.log(form);
+  const isLoading = form.formState.isSubmitting;
+
+  // console.log(form);
 
   const onSumbit = async (formData: z.infer<typeof FormSchema>) => {
     console.log(formData);
@@ -45,6 +56,41 @@ const LoginPage = (props: Props) => {
             cypress.
           </span>
         </Link>
+
+        <FormDescription>
+          An all-In-One Collaboration and Productivity Platform
+        </FormDescription>
+        <FormField
+          disabled={isLoading}
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type="email" placeholder="Email" {...field}></Input>
+              </FormControl>
+              <FormMessage></FormMessage>
+            </FormItem>
+          )}
+        ></FormField>
+
+        <FormField
+          disabled={isLoading}
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  {...field}
+                ></Input>
+              </FormControl>
+              <FormMessage></FormMessage>
+            </FormItem>
+          )}
+        ></FormField>
       </form>
     </Form>
   );
