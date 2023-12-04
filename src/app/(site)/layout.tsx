@@ -1,3 +1,4 @@
+import Header from "@/components/landing-page/Header";
 import React from "react";
 
 type Props = {
@@ -5,7 +6,12 @@ type Props = {
 };
 
 const HomePageLayout = ({ children }: Props) => {
-  return <main>{children}</main>;
+  return (
+    <main>
+      <Header></Header>
+      {children}
+    </main>
+  );
 };
 
 export default HomePageLayout;

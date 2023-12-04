@@ -1,4 +1,6 @@
 "use client";
+import Loader from "@/components/global/Loader";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -8,7 +10,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FormSchema } from "@/lib/types";
+import { actionLoginUser } from "@/lib/sever-actions/auth-actions";
+import { LoginFormSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,9 +27,9 @@ const LoginPage = (props: Props) => {
   const router = useRouter();
   const [sumbitError, setSubmitError] = useState("");
 
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<z.infer<typeof LoginFormSchema>>({
     mode: "onChange",
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -35,10 +38,14 @@ const LoginPage = (props: Props) => {
 
   const isLoading = form.formState.isSubmitting;
 
-  // console.log(form);
-
-  const onSumbit = async (formData: z.infer<typeof FormSchema>) => {
-    console.log(formData);
+  const onSumbit = async (formData: z.infer<typeof LoginFormSchema>) => {
+    const { error } = await actionLoginUser(formData);
+    if (error) {
+      form.reset();
+      setSubmitError(error.message);
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -91,6 +98,24 @@ const LoginPage = (props: Props) => {
             </FormItem>
           )}
         ></FormField>
+
+        {sumbitError && <FormMessage>{sumbitError}</FormMessage>}
+
+        <Button
+          type="submit"
+          className="w-full p-6"
+          size="lg"
+          disabled={isLoading}
+        >
+          {!isLoading ? "Login" : <Loader></Loader>}
+        </Button>
+
+        <span className="">
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-primary">
+            Sign Up
+          </Link>
+        </span>
       </form>
     </Form>
   );

@@ -7,8 +7,8 @@ type Props = {
 const TitleSection = ({ title, subheading, pill }: Props) => {
   return (
     <>
-      <section className="flex flex-col items-start justify-center gap-4 md:items-center px-4">
-        <article className="rounded-full p-[1px] text-sm dark:bg-gradient-to-r dark:from-brand-primaryBlue dark:to-brand-primaryPurple">
+      <section className="flex flex-col items-start justify-center gap-4 px-4 md:items-center">
+        <article className="dark:from-brand-primary-blue dark:to-brand-primary-purple rounded-full p-[1px] text-sm dark:bg-gradient-to-r">
           <div className="max-w-max rounded-full px-3 py-1 dark:bg-black">
             {pill}
           </div>

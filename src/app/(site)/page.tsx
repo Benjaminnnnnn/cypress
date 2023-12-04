@@ -23,7 +23,7 @@ const HomePage = (props: Props) => {
           pill="✨ Your Workspace, Perfected"
           title="All-In-One Collaboration and Productivity Platform"
         ></TitleSection>
-        <div className="mt-6 rounded-xl bg-gradient-to-r from-brand-primaryPurple to-brand-primaryBlue p-[2px] sm:w-[300px]">
+        <div className="to-brand-primary-blue from-brand-primary-purple mt-6 rounded-xl bg-gradient-to-r p-[2px] sm:w-[300px]">
           <Button
             variant="secondary"
             className="w-full rounded-[10px] bg-background p-6 text-2xl"
@@ -67,7 +67,7 @@ const HomePage = (props: Props) => {
         >
           {[...Array(2)].map((arr, idx) => (
             <div
-              key={arr}
+              key={idx}
               className="animate-slide
                 flex
                 flex-nowrap
@@ -99,7 +99,7 @@ const HomePage = (props: Props) => {
       </section>
 
       <section className="relative flex flex-col items-center justify-center px-4 sm:px-6">
-        <div className="absolute -z-10 h-32 w-[30%] rounded-full bg-brand-primaryPurple/50 blur-[120px]"></div>
+        <div className="bg-brand-primary-purple/50 absolute -z-10 h-32 w-[30%] rounded-full blur-[120px]"></div>
         <TitleSection
           title="Keep track of your meetings all in one place"
           subheading="Capture your ideas, thoughts, and meeting notes in a structured and organized manner."
@@ -111,7 +111,7 @@ const HomePage = (props: Props) => {
       </section>
 
       <section className="relative">
-        <div className="absolute top-56 -z-10 h-32 w-full rounded-full bg-brand-primaryPurple/50 blur-[120px]"></div>
+        <div className="bg-brand-primary-purple/50 absolute top-56 -z-10 h-32 w-full rounded-full blur-[120px]"></div>
         <div className="mt-20 flex flex-col overflow-visible overflow-x-hidden px-4 sm:px-6">
           <TitleSection
             title="Truested by all"
@@ -177,10 +177,11 @@ const HomePage = (props: Props) => {
         <div className="mt-10 flex flex-col-reverse items-center justify-center gap-4 sm:flex-row sm:items-stretch">
           {PRICING_CARDS.map((card) => (
             <CustomCard
+              key={card.planType}
               className={cn(
                 "relative w-[300px] rounded-2xl backdrop-blur-3xl dark:bg-black/40",
                 {
-                  "border-brand-primaryPurple/70":
+                  "border-brand-primary-purple/70":
                     card.planType === PRICING_PLANS.proplan,
                 },
               )}
@@ -188,7 +189,7 @@ const HomePage = (props: Props) => {
                 <CardTitle className="text-2xl font-semibold">
                   {card.planType === PRICING_PLANS.proplan && (
                     <>
-                      <div className="absolute top-0 -z-10 hidden h-32 w-full rounded-full bg-brand-primaryPurple/80 blur-[120px] dark:block"></div>
+                      <div className="bg-brand-primary-purple/80 absolute top-0 -z-10 hidden h-32 w-full rounded-full blur-[120px] dark:block"></div>
                       <Image
                         src={Diamond}
                         alt="Pro Plan Icon"
