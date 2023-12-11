@@ -38,8 +38,10 @@ const LoginPage = (props: Props) => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSumbit = async (formData: z.infer<typeof LoginFormSchema>) => {
-    const { error } = await actionLoginUser(formData);
+  const onSumbit = async (
+    loginCredentials: z.infer<typeof LoginFormSchema>,
+  ) => {
+    const { error } = await actionLoginUser(loginCredentials);
     if (error) {
       form.reset();
       setSubmitError(error.message);
@@ -101,12 +103,7 @@ const LoginPage = (props: Props) => {
 
         {sumbitError && <FormMessage>{sumbitError}</FormMessage>}
 
-        <Button
-          type="submit"
-          className="w-full p-6"
-          size="lg"
-          disabled={isLoading}
-        >
+        <Button type="submit" className="w-full p-6" disabled={isLoading}>
           {!isLoading ? "Login" : <Loader></Loader>}
         </Button>
 
