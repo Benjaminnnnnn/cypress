@@ -23,7 +23,7 @@ const HomePage = (props: Props) => {
           pill="✨ Your Workspace, Perfected"
           title="All-In-One Collaboration and Productivity Platform"
         ></TitleSection>
-        <div className="to-brand-primary-blue from-brand-primary-purple mt-6 rounded-xl bg-gradient-to-r p-[2px] sm:w-[300px]">
+        <div className="mt-6 rounded-xl bg-gradient-to-r from-brand-primary-purple to-brand-primary-blue p-[2px] sm:w-[300px]">
           <Button
             variant="secondary"
             className="w-full rounded-[10px] bg-background p-6 text-2xl"
@@ -99,7 +99,7 @@ const HomePage = (props: Props) => {
       </section>
 
       <section className="relative flex flex-col items-center justify-center px-4 sm:px-6">
-        <div className="bg-brand-primary-purple/50 absolute -z-10 h-32 w-[30%] rounded-full blur-[120px]"></div>
+        <div className="absolute -z-10 h-32 w-[30%] rounded-full bg-brand-primary-purple/50 blur-[120px]"></div>
         <TitleSection
           title="Keep track of your meetings all in one place"
           subheading="Capture your ideas, thoughts, and meeting notes in a structured and organized manner."
@@ -111,7 +111,7 @@ const HomePage = (props: Props) => {
       </section>
 
       <section className="relative">
-        <div className="bg-brand-primary-purple/50 absolute top-56 -z-10 h-32 w-full rounded-full blur-[120px]"></div>
+        <div className="absolute top-56 -z-10 h-32 w-full rounded-full bg-brand-primary-purple/50 blur-[120px]"></div>
         <div className="mt-20 flex flex-col overflow-visible overflow-x-hidden px-4 sm:px-6">
           <TitleSection
             title="Truested by all"
@@ -189,7 +189,7 @@ const HomePage = (props: Props) => {
                 <CardTitle className="text-2xl font-semibold">
                   {card.planType === PRICING_PLANS.proplan && (
                     <>
-                      <div className="bg-brand-primary-purple/80 absolute top-0 -z-10 hidden h-32 w-full rounded-full blur-[120px] dark:block"></div>
+                      <div className="absolute top-0 -z-10 hidden h-32 w-full rounded-full bg-brand-primary-purple/80 blur-[120px] dark:block"></div>
                       <Image
                         src={Diamond}
                         alt="Pro Plan Icon"

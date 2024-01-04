@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
       cookies,
     });
     await supabase.auth.exchangeCodeForSession(code);
-    // return NextResponse.redirect(`${requestUrl.origin}/dashboard`);
     return NextResponse.redirect(`${req.nextUrl.origin}/dashboard`);
   } else {
     return NextResponse.redirect(`${req.nextUrl.origin}/signup`);

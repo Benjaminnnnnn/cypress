@@ -34,6 +34,10 @@ const Signup = (props: Props) => {
   const [confirmation, setConfirmation] = useState(false);
 
   const exchangeError = useMemo(() => {
+    if (typeof window !== undefined) {
+      return "";
+    }
+
     const searchFragments = window.location.hash;
     if (!searchParams && !searchFragments) {
       return "";
@@ -44,7 +48,9 @@ const Signup = (props: Props) => {
     return (
       searchParams.get("error_description") || params.get("error_description")
     );
-  }, [searchParams, window.location.hash]);
+  }, [searchParams]);
+
+  console.log("error", exchangeError);
 
   const confirmationAndErrorStyles = useMemo(
     () =>
@@ -53,7 +59,7 @@ const Signup = (props: Props) => {
         "border-red-500/50": exchangeError,
         "text-red-700": exchangeError,
       }),
-    [],
+    [exchangeError],
   );
 
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
@@ -88,7 +94,7 @@ const Signup = (props: Props) => {
           if (submitError) setSubmitError("");
         }}
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col space-y-6 sm:w-[400px] sm:justify-center "
+        className="flex w-full flex-col space-y-6 sm:w-[400px] sm:justify-center"
       >
         <Link href="/" className="justfiy-start flex w-full items-center">
           <Image src={Logo} alt="cypress logo" width={50} height={50}></Image>
