@@ -20,4 +20,3 @@ const migrateDb = async () => {
 migrateDb();
 
 export default db;
-
