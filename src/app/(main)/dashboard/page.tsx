@@ -22,7 +22,9 @@ const Dashboard = async (props: Props) => {
   });
 
   const { data: subscription, error: subscriptionError } =
-    await getUserSubscriptionStatus("20");
+    await getUserSubscriptionStatus(user.id);
+
+  if (subscriptionError) return;
 
   if (!workspace) {
     return (

@@ -19,7 +19,7 @@ export async function actionSignupUser({
   confirmPassword,
 }: z.infer<typeof SignUpFormSchema>) {
   const supabase = createRouteHandlerClient({ cookies });
-  const { data } = await supabase.from("profi").select("*").eq("email", email);
+  const { data } = await supabase.from("users").select("*").eq("email", email);
 
   if (data?.length) {
     return {

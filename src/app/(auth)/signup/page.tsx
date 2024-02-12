@@ -50,8 +50,6 @@ const Signup = (props: Props) => {
     );
   }, [searchParams]);
 
-  console.log("error", exchangeError);
-
   const confirmationAndErrorStyles = useMemo(
     () =>
       clsx("bg-primary", {
@@ -83,7 +81,6 @@ const Signup = (props: Props) => {
       setSubmitError(error.message);
     } else {
       setConfirmation(true);
-      // router.push("/dashboard");
     }
   };
 
@@ -188,10 +185,6 @@ const Signup = (props: Props) => {
             </Alert>
           </>
         )}
-
-        <Link href="http://localhost:3000/signup#error=unauthorized_client&error_code=401&error_description=Email+link+is+invalid+or+has+expire">
-          <Button variant="destructive">hello</Button>
-        </Link>
       </form>
     </Form>
   );

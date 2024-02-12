@@ -22,7 +22,8 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       };
     }
   } catch (error) {
-    logger.info(error);
+    console.log(error)
+    // logger.info(error);
     return {
       data: null,
       error: `Error: {error}`,
