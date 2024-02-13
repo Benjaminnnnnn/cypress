@@ -20,6 +20,7 @@ const Dashboard = async (props: Props) => {
   const workspace = await db.query.workspaces.findFirst({
     where: (workspaces, { eq }) => eq(workspaces.workspaceOwner, user.id),
   });
+  console.log(workspace);
 
   const { data: subscription, error: subscriptionError } =
     await getUserSubscriptionStatus(user.id);

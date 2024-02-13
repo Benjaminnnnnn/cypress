@@ -38,7 +38,7 @@ const LoginPage = (props: Props) => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSumbit = async (
+  const onSubmit = async (
     loginCredentials: z.infer<typeof LoginFormSchema>,
   ) => {
     const { error } = await actionLoginUser(loginCredentials);
@@ -56,7 +56,7 @@ const LoginPage = (props: Props) => {
         onChange={() => {
           if (sumbitError) setSubmitError("");
         }}
-        onSubmit={form.handleSubmit(onSumbit)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full flex-col space-y-6 sm:w-[400px] sm:justify-center"
       >
         <Link href="/" className="justfiy-start flex w-full items-center">

@@ -2,7 +2,8 @@
 
 import { logger } from "../logger/logger";
 import db from "./db";
-import { Subscription } from "./supabase.types";
+import { workspaces } from "./schema";
+import { Subscription, workspace } from "./supabase.types";
 
 export const getUserSubscriptionStatus = async (userId: string) => {
   try {
@@ -22,11 +23,20 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       };
     }
   } catch (error) {
-    console.log(error)
-    // logger.info(error);
+    logger.info(error);
     return {
       data: null,
       error: `Error: {error}`,
     };
+  }
+};
+
+export const createWorkspace = async (workspace: workspace) => {
+  try {
+    await db.insert(workspaces).values(workspace);
+    return { data: null, error: null };
+  } catch (error) {
+    console.info(error);
+    return { data: null, error: "Unable to create workspace" };
   }
 };

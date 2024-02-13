@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import EmojiPicker from "../global/EmojiPicker";
+import EmojiPicker from "../global/emoji-picker";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { CreateWorkspaceFormSchema } from "@/lib/types";
@@ -16,12 +16,14 @@ import { SubmitErrorHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { v4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Subscription } from "@/lib/supabase/supabase.types";
+import { Subscription, workspace } from "@/lib/supabase/supabase.types";
 import { Button } from "../ui/button";
 import Loader from "../global/Loader";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { logger } from "@/lib/logger/logger";
 import { useToast } from "../ui/use-toast";
+import { createWorkspace } from "@/lib/supabase/queries";
+import { useRouter } from "next/navigation";
 
 interface DashboardSetupProps {
   user: AuthUser;
@@ -30,6 +32,7 @@ interface DashboardSetupProps {
 
 const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
   const supabase = createClientComponentClient();
+  const router = useRouter();
   const { toast } = useToast();
   const [selectedEmoji, setSelectedEmoji] = useState<string>("📈");
   const {
@@ -51,28 +54,59 @@ const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
     let filePath = null;
     const workspaceUUID = v4();
 
-    toast({
-      variant: "destructive",
-      title: "Could not upload your workspace logo",
-    });
-    // if (file) {
-    //   try {
-    //     const { data, error } = await supabase.storage
-    //       .from("workspace-logo")
-    //       .upload(`worspaceLogo.${workspaceUUID}`, file, {
-    //         cacheControl: "3600",
-    //         upsert: true,
-    //       });
-    //     if (error) throw new Error(error.message);
-    //     filePath = data.path;
-    //   } catch (error) {
-    //     logger.info(error);
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Could not upload your workspace logo",
-    //     });
-    //   }
-    // }
+    // save workspace logo image
+    if (file) {
+      try {
+        const { data, error } = await supabase.storage
+          .from("workspace-logo")
+          .upload(`${user.id}/${workspaceUUID}`, file, {
+            cacheControl: "3600",
+            upsert: true,
+          });
+        if (error) throw new Error(error.message);
+        filePath = data.path;
+      } catch (error) {
+        console.info(error);
+        toast({
+          variant: "destructive",
+          title: "Could not upload your workspace logo",
+        });
+      }
+    }
+
+    try {
+      const newWorkspace: workspace = {
+        data: null,
+        createdAt: new Date().toISOString(),
+        iconId: selectedEmoji,
+        id: workspaceUUID,
+        inTrash: "",
+        title: value.workspaceName,
+        workspaceOwner: user.id,
+        logo: filePath || null,
+        bannerUrl: "",
+      };
+      const { data, error: createError } = await createWorkspace(newWorkspace);
+      if (createError) throw new Error(createError);
+      throw new Error(createError);
+
+      toast({
+        title: "Workspace Created",
+        description: `${newWorkspace.title} has been created successfully`,
+      });
+
+      router.replace(`/dashboard/${newWorkspace.id}`);
+    } catch (error) {
+      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Could not create your workspace",
+        description:
+          "Oops, we couldn't create your workspace. Please try again or come back later.",
+      });
+    } finally {
+      reset();
+    }
   };
 
   return (
