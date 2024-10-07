@@ -1,6 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import { createWorkspace } from "@/lib/supabase/queries";
+import { Subscription, workspace } from "@/lib/supabase/supabase.types";
+import { CreateWorkspaceFormSchema } from "@/lib/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AuthUser } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { v4 } from "uuid";
+import { z } from "zod";
+import EmojiPicker from "../global/emoji-picker";
+import Loader from "../global/Loader";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -8,22 +20,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import EmojiPicker from "../global/emoji-picker";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { CreateWorkspaceFormSchema } from "@/lib/types";
-import { SubmitErrorHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import { v4 } from "uuid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Subscription, workspace } from "@/lib/supabase/supabase.types";
-import { Button } from "../ui/button";
-import Loader from "../global/Loader";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { logger } from "@/lib/logger/logger";
+import { Label } from "../ui/label";
 import { useToast } from "../ui/use-toast";
-import { createWorkspace } from "@/lib/supabase/queries";
-import { useRouter } from "next/navigation";
 
 interface DashboardSetupProps {
   user: AuthUser;
@@ -88,7 +87,6 @@ const DashboardSetup = ({ subscription, user }: DashboardSetupProps) => {
       };
       const { data, error: createError } = await createWorkspace(newWorkspace);
       if (createError) throw new Error(createError);
-      throw new Error(createError);
 
       toast({
         title: "Workspace Created",
