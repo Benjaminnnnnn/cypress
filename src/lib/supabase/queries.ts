@@ -1,14 +1,16 @@
 "use server";
 
+import { eq } from "drizzle-orm";
+import { validate } from "uuid";
 import { logger } from "../logger/logger";
 import db from "./db";
-import { workspaces } from "./schema";
-import { Subscription, workspace } from "./supabase.types";
+import { folders, workspaces } from "./schema";
+import { Folder, Subscription, workspace } from "./supabase.types";
 
 export const getUserSubscriptionStatus = async (userId: string) => {
   try {
     const subscription = await db.query.subscriptions.findFirst({
-      where: (sub, { eq }) => eq(userId, sub.userId),
+      where: (sub, { eq }) => eq(sub.userId, sub.userId),
     });
 
     if (subscription) {
@@ -23,10 +25,36 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       };
     }
   } catch (error) {
-    logger.info(error);
+    logger.error(error);
     return {
       data: null,
-      error: `Error: {error}`,
+      error: `Error: ${error}`,
+    };
+  }
+};
+
+export const getFolders = async (workspaceId: string) => {
+  const isValid = validate(workspaceId);
+  if (!isValid) {
+    return {
+      data: null,
+      error: "Workspace ID invalid",
+    };
+  }
+
+  try {
+    const results: Folder[] | [] = await db
+      .select()
+      .from(folders)
+      .orderBy(folders.createdAt)
+      .where(eq(folders.workspaceId, workspaceId));
+
+    return { data: results, error: null };
+  } catch (error) {
+    logger.error(`Cannot fetch folders in workspace: ${workspaceId}`);
+    return {
+      data: null,
+      error: `Cannot fetch folders in workspace`,
     };
   }
 };

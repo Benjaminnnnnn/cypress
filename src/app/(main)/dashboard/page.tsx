@@ -1,10 +1,9 @@
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import DashboardSetup from "@/components/dashboard-setup/dashboard-setup";
 import db from "@/lib/supabase/db";
-import { workspaces } from "@/lib/supabase/schema";
-import { redirect } from "next/navigation";
-import DashboardSetup from "@/components/dashboard-setup/DashboardSetup";
 import { getUserSubscriptionStatus } from "@/lib/supabase/queries";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 type Props = {};
 
