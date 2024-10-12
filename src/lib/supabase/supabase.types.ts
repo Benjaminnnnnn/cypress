@@ -1,13 +1,13 @@
 import { type InferSelectModel } from "drizzle-orm";
 import {
-  workspaces,
-  users,
-  folders,
-  files,
-  products,
-  prices,
   customers,
+  files,
+  folders,
+  prices,
+  products,
   subscriptions,
+  users,
+  workspaces,
 } from "../../../migrations/schema";
 
 export type Json =
@@ -471,7 +471,7 @@ export type Enums<
     ? Database["public"]["Enums"][PublicEnumNameOrOptions]
     : never;
 
-export type workspace = InferSelectModel<typeof workspaces>;
+export type Workspace = InferSelectModel<typeof workspaces>;
 export type User = InferSelectModel<typeof users>;
 export type Folder = InferSelectModel<typeof folders>;
 export type File = InferSelectModel<typeof files>;

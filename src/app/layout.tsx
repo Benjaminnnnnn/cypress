@@ -2,9 +2,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 
+import { Toaster } from "@/components/ui/toaster";
+import { logger } from "@/lib/logger/logger";
+import db from "@/lib/supabase/db";
 import { twMerge } from "tailwind-merge";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
@@ -18,7 +20,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // console.log(db);
+  logger.info(db);
   return (
     <html lang="en">
       <body className={twMerge("bg-background", dmSans.className)}>
