@@ -1,7 +1,16 @@
-import { getFolders, getUserSubscriptionStatus } from "@/lib/supabase/queries";
+import {
+  getCollaboratingWorkspaces,
+  getFolders,
+  getPrivateWorkspaces,
+  getSharedWorkspaces,
+  getUserSubscriptionStatus,
+} from "@/lib/supabase/queries";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { twMerge } from "tailwind-merge";
+import PlanUsage from "./plan-usage";
+import WorkspaceDropdown from "./workspace-dropdown";
 
 interface SidebarProps {
   params: {
@@ -29,7 +38,7 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
     await getUserSubscriptionStatus(user.id);
 
   //folders
-  const { data: foldersData, error: foldersError } = await getFolders(
+  const { data: workspaceFoldersData, error: foldersError } = await getFolders(
     params.workspaceId,
   );
 
@@ -38,7 +47,37 @@ const Sidebar = async ({ params, className }: SidebarProps) => {
     redirect("/dashboard");
   }
 
-  return <div>Sidebar</div>;
+  const [privateWorkspaces, collboratingWorkspaces, sharedWorkspaces] =
+    await Promise.all([
+      getPrivateWorkspaces(user.id),
+      getCollaboratingWorkspaces(user.id),
+      getSharedWorkspaces(user.id),
+    ]);
+
+  return (
+    <aside
+      className={twMerge(
+        "hidden w-[280px] shrink-0 !justify-between p-4 sm:flex sm:flex-col md:gap-4",
+        className,
+      )}
+    >
+      <WorkspaceDropdown
+        privateWorkspaces={privateWorkspaces}
+        sharedWorkspaces={sharedWorkspaces}
+        collaboratingWorkspaces={collboratingWorkspaces}
+        defaultValue={[
+          ...privateWorkspaces,
+          ...collboratingWorkspaces,
+          ...sharedWorkspaces,
+        ].find((workspace) => workspace.id === params.workspaceId)}
+      ></WorkspaceDropdown>
+
+      <PlanUsage
+        foldersLength={workspaceFoldersData?.length || 0}
+        susbcription={subscriptionData}
+      ></PlanUsage>
+    </aside>
+  );
 };
 
 export default Sidebar;

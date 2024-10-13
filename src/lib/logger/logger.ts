@@ -7,7 +7,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.File({
       filename: "app.log",
-      maxsize: 50000000,
+      maxsize: 500000,
       maxFiles: 3,
     }),
   ],

@@ -5,8 +5,8 @@ import { validate } from "uuid";
 import { users } from "../../../migrations/schema";
 import { logger } from "../logger/logger";
 import db from "./db";
-import { collaborators, folders, workspaces } from "./schema";
-import { Folder, Subscription, Workspace } from "./supabase.types";
+import { collaborators, files, folders, workspaces } from "./schema";
+import { File, Folder, Subscription, Workspace } from "./supabase.types";
 
 export const getUserSubscriptionStatus = async (userId: string) => {
   try {
@@ -57,6 +57,22 @@ export const getFolders = async (workspaceId: string) => {
       data: null,
       error: `Cannot fetch folders in workspace`,
     };
+  }
+};
+
+export const getFiles = async (folderId: string) => {
+  const isValid = validate(folderId);
+  if (!isValid) return { data: null, error: "Error" };
+  try {
+    const results = (await db
+      .select()
+      .from(files)
+      .orderBy(files.createdAt)
+      .where(eq(files.folderId, folderId))) as File[] | [];
+    return { data: results, error: null };
+  } catch (error) {
+    logger.error(`Cannot fectch files in folder: ${error}`);
+    return { data: null, error: "Error" };
   }
 };
 
